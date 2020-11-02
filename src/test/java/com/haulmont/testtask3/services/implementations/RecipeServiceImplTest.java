@@ -14,8 +14,10 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -71,8 +73,11 @@ public class RecipeServiceImplTest {
     @Test
     public void getByIdExistingRecipeTest() throws ElementDoesNotExistException {
         long id = 1L;
-        when(recipeDao.getById(id)).thenReturn(new Recipe());
-        testRecipeServiceImpl.getById(id);
+        Recipe expectedRecipe = new Recipe();
+        expectedRecipe.setId(id);
+        when(recipeDao.getById(id)).thenReturn(expectedRecipe);
+        Recipe actualRecipe = testRecipeServiceImpl.getById(id);
+        assertEquals(expectedRecipe, actualRecipe);
     }
 
     @Test(expected = ElementDoesNotExistException.class)
@@ -100,22 +105,28 @@ public class RecipeServiceImplTest {
 
     @Test
     public void getAllTest() {
-        when(recipeDao.getAll()).thenReturn(new ArrayList<>());
-        testRecipeServiceImpl.getAll();
+        List<Recipe> expectedRecipes = new ArrayList<>();
+        when(recipeDao.getAll()).thenReturn(expectedRecipes);
+        List<Recipe> actualRecipes = testRecipeServiceImpl.getAll();
+        assertEquals(expectedRecipes, actualRecipes);
     }
 
     @Test
     public void getRecipeQtyByPatientIdTest() {
         long id = 1L;
-        when(recipeDao.getRecipeQtyByPatientId(id)).thenReturn(0);
-        testRecipeServiceImpl.getRecipeQtyByPatientId(id);
+        int expectedQty = 0;
+        when(recipeDao.getRecipeQtyByPatientId(id)).thenReturn(expectedQty);
+        int actualQty = testRecipeServiceImpl.getRecipeQtyByPatientId(id);
+        assertEquals(expectedQty, actualQty);
     }
 
     @Test
     public void getRecipeQtyByDoctorIdTest() {
         long id = 1L;
-        when(recipeDao.getRecipeQtyByDoctorId(id)).thenReturn(0);
-        testRecipeServiceImpl.getRecipeQtyByDoctorId(id);
+        int expectedQty = 0;
+        when(recipeDao.getRecipeQtyByDoctorId(id)).thenReturn(expectedQty);
+        int actualQty = testRecipeServiceImpl.getRecipeQtyByDoctorId(id);
+        assertEquals(expectedQty, actualQty);
     }
 
     @Test
@@ -123,7 +134,9 @@ public class RecipeServiceImplTest {
         long patientId = 1L;
         String priority = "";
         String description = "";
-        when(recipeDao.findAll(patientId, priority, description)).thenReturn(new ArrayList<>());
-        testRecipeServiceImpl.findAll(patientId, priority, description);
+        List<Recipe> expectedRecipes = new ArrayList<>();
+        when(recipeDao.findAll(patientId, priority, description)).thenReturn(expectedRecipes);
+        List<Recipe> actualRecipes = testRecipeServiceImpl.findAll(patientId, priority, description);
+        assertEquals(expectedRecipes, actualRecipes);
     }
 }

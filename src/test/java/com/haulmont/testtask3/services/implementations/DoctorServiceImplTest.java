@@ -16,8 +16,10 @@ import javax.validation.Validator;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -78,9 +80,12 @@ public class DoctorServiceImplTest {
 
     @Test
     public void getByIdExistingDoctorTest() throws ElementDoesNotExistException {
-        long id = 0;
-        when(doctorDao.getById(id)).thenReturn(new Doctor());
-        testDoctorServiceImpl.getById(id);
+        long id = 1L;
+        Doctor expectedDoctor = new Doctor();
+        expectedDoctor.setId(id);
+        when(doctorDao.getById(id)).thenReturn(expectedDoctor);
+        Doctor actualDoctor = testDoctorServiceImpl.getById(id);
+        assertEquals(expectedDoctor, actualDoctor);
     }
 
     @Test(expected = ElementDoesNotExistException.class)
@@ -117,7 +122,9 @@ public class DoctorServiceImplTest {
 
     @Test
     public void getAllTest() {
-        when(doctorDao.getAll()).thenReturn(new ArrayList<>());
-        testDoctorServiceImpl.getAll();
+        List<Doctor> expectedDoctors = new ArrayList<>();
+        when(doctorDao.getAll()).thenReturn(expectedDoctors);
+        List<Doctor> actualDoctors = testDoctorServiceImpl.getAll();
+        assertEquals(expectedDoctors, actualDoctors);
     }
 }
